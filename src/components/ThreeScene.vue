@@ -7,7 +7,7 @@ import { ref, onMounted, onUnmounted } from 'vue'
 //todo
 import * as THREE from "three"
 //todo
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import GUI from 'lil-gui'
 
 //todo
@@ -17,7 +17,7 @@ import Stats from "stats.js"
 
 const container = ref<HTMLDivElement | null>(null)
 
-let renderer: THREE.WebGLRenderer
+let renderer: THREE.WebGLRenderer | null = null;
 let scene: THREE.Scene
 let camera: THREE.PerspectiveCamera
 let controls: OrbitControls
@@ -32,7 +32,7 @@ onMounted(() => {
   stats.showPanel(0)
   document.body.appendChild(stats.dom)
 
-  renderer = new THREE.WebGLRenderer({ antialias: true })
+  const renderer = new THREE.WebGLRenderer({ antialias: true }) as any;
   renderer.physicallyCorrectLights = true
   renderer.outputColorSpace = THREE.SRGBColorSpace
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5))
@@ -183,7 +183,12 @@ onUnmounted(() => {
   window.removeEventListener('resize', () => {})
   try { controls.dispose() } catch {}
   try { gui.destroy() } catch {}
-  try { renderer.dispose() } catch {}
+  if(renderer){
+    try {
+      (renderer as any)?.dispose();
+    } catch {}
+  }
+
 })
 
 const keys: Record<string, boolean> = {}
