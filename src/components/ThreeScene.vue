@@ -113,17 +113,17 @@ onMounted(() => {
       roughness: 0.7,
       metalness: 0.05
     })
-    textureLoader.load(woodPath,
-        (tex) => {
-          tex.wrapS = tex.wrapT = THREE.RepeatWrapping
-          tex.repeat.set(1, 1)
-          mat.map = tex
-          mat.needsUpdate = true
-        },
-        undefined,
-        () => {
-        }
-    )
+    textureLoader.load(
+      woodPath,
+      (tex: THREE.Texture) => {
+        tex.wrapS = tex.wrapT = THREE.RepeatWrapping;
+        tex.repeat.set(1, 1);
+        mat.map = tex;
+        mat.needsUpdate = true;
+      },
+      undefined,
+      () => {}
+    );
 
     const mesh = new THREE.Mesh(geo, mat)
     mesh.castShadow = true
